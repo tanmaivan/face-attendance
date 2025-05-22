@@ -1,0 +1,33 @@
+# Core dependencies
+numpy
+opencv-python
+Pillow
+timm
+facenet-pytorch
+faiss-cpu
+
+# Face recognition specific
+dlib
+# Web framework and dependencies
+flask
+gunicorn
+itsdangerous
+Jinja2
+MarkupSafe
+Werkzeug
+
+# Additional utilities
+certifi
+chardet==3.0.4
+click==7.1.2
+cmake==3.18.2.post1
+decorator==4.4.2
+idna==2.10
+imageio==2.9.0
+imageio-ffmpeg==0.4.2
+moviepy==1.0.3
+proglog==0.1.9
+requests==2.24.0
+tqdm==4.51.0
+urllib3==1.25.11
+wincertstore==0.2

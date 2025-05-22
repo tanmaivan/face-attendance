@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>FRAMS - Face Recognition Attendance System</title>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+
+        <!-- Google Fonts -->
+        <link
+            href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+            rel="stylesheet"
+        />
+
+        <!-- Bootstrap CSS -->
+        <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+        />
+
+        <!-- Font Awesome -->
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+        />
+
+        <style>
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+                font-family: "Poppins", sans-serif;
+            }
+
+            body {
+                background: #f4f7fe;
+                min-height: 100vh;
+            }
+
+            .main-content {
+                padding: 2rem 0;
+                min-height: calc(100vh - 72px);
+            }
+
+            .container {
+                max-width: 1200px;
+                margin: 0 auto;
+                padding: 0 1rem;
+            }
+
+            .welcome-section {
+                text-align: center;
+                margin-bottom: 3rem;
+            }
+
+            .welcome-title {
+                color: #1f2937;
+                font-size: 2.5rem;
+                font-weight: 600;
+                margin-bottom: 1rem;
+            }
+
+            .welcome-subtitle {
+                color: #6b7280;
+                font-size: 1.1rem;
+                max-width: 600px;
+                margin: 0 auto;
+            }
+
+            .features-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+                gap: 2rem;
+                margin-bottom: 3rem;
+            }
+
+            .feature-card {
+                background: white;
+                border-radius: 20px;
+                padding: 2rem;
+                text-align: center;
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+                transition: all 0.3s ease;
+            }
+
+            .feature-card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+            }
+
+            .feature-icon {
+                font-size: 2.5rem;
+                color: #667eea;
+                margin-bottom: 1.5rem;
+            }
+
+            .feature-title {
+                color: #1f2937;
+                font-size: 1.25rem;
+                font-weight: 600;
+                margin-bottom: 1rem;
+            }
+
+            .feature-description {
+                color: #6b7280;
+                font-size: 1rem;
+                line-height: 1.6;
+            }
+
+            .action-buttons {
+                display: flex;
+                gap: 1rem;
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+
+            .btn {
+                padding: 0.75rem 2rem;
+                border-radius: 10px;
+                font-weight: 500;
+                font-size: 1.1rem;
+                display: inline-flex;
+                align-items: center;
+                gap: 0.5rem;
+                transition: all 0.3s ease;
+                text-decoration: none;
+            }
+
+            .btn-primary {
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                color: white;
+                border: none;
+            }
+
+            .btn-primary:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+                color: white;
+            }
+
+            .btn-outline {
+                background: white;
+                border: 2px solid #667eea;
+                color: #667eea;
+            }
+
+            .btn-outline:hover {
+                background: #667eea;
+                color: white;
+            }
+
+            @media (max-width: 768px) {
+                .welcome-title {
+                    font-size: 2rem;
+                }
+
+                .features-grid {
+                    grid-template-columns: 1fr;
+                }
+
+                .action-buttons {
+                    flex-direction: column;
+                }
+
+                .btn {
+                    width: 100%;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        {% include 'header.html' %}
+
+        <main class="main-content">
+            <div class="container">
+                <div class="welcome-section">
+                    {% if session.username %}
+                    <h1 class="welcome-title">Admin Panel</h1>
+                    <p class="welcome-subtitle">
+                        Manage attendance records and system settings
+                    </p>
+                    {% else %}
+                    <h1 class="welcome-title">Welcome to FRAMS</h1>
+                    <p class="welcome-subtitle">
+                        Face Recognition Attendance Management System - A modern
+                        solution for tracking attendance
+                    </p>
+                    {% endif %}
+                </div>
+
+                {% if session.username %}
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <i class="fas fa-user-plus feature-icon"></i>
+                        <h3 class="feature-title">Face Registration</h3>
+                        <p class="feature-description">
+                            Register new faces for the attendance system
+                        </p>
+                        <form action="/new" method="post" class="mt-3">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-user-plus"></i>
+                                Register New Face
+                            </button>
+                        </form>
+                    </div>
+                    <div class="feature-card">
+                        <i class="fas fa-calendar-day feature-icon"></i>
+                        <h3 class="feature-title">Today's Attendance</h3>
+                        <p class="feature-description">
+                            View and manage today's attendance records
+                        </p>
+                        <form action="/data" method="post" class="mt-3">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-calendar-day"></i>
+                                View Today's Records
+                            </button>
+                        </form>
+                    </div>
+                    <div class="feature-card">
+                        <i class="fas fa-database feature-icon"></i>
+                        <h3 class="feature-title">Attendance Records</h3>
+                        <p class="feature-description">
+                            View and manage all attendance records
+                        </p>
+                        <form action="/whole" method="post" class="mt-3">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-database"></i>
+                                View Database
+                            </button>
+                        </form>
+                    </div>
+                    <div class="feature-card">
+                        <i class="fas fa-chart-line feature-icon"></i>
+                        <h3 class="feature-title">Analytics Dashboard</h3>
+                        <p class="feature-description">
+                            Get detailed insights and statistics
+                        </p>
+                        <a href="/dashboard" class="btn btn-primary mt-3">
+                            <i class="fas fa-chart-line"></i>
+                            View Dashboard
+                        </a>
+                    </div>
+                    <div class="feature-card">
+                        <i class="fas fa-users feature-icon"></i>
+                        <h3 class="feature-title">Registered Faces</h3>
+                        <p class="feature-description">
+                            View and manage registered faces in the system
+                        </p>
+                        <a
+                            href="/registered_faces"
+                            class="btn btn-primary mt-3"
+                        >
+                            <i class="fas fa-users"></i>
+                            Manage Faces
+                        </a>
+                    </div>
+                </div>
+                {% else %}
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <i class="fas fa-camera feature-icon"></i>
+                        <h3 class="feature-title">Face Recognition</h3>
+                        <p class="feature-description">
+                            Advanced face recognition technology for accurate
+                            attendance tracking
+                        </p>
+                    </div>
+                    <div class="feature-card">
+                        <i class="fas fa-chart-line feature-icon"></i>
+                        <h3 class="feature-title">Real-time Analytics</h3>
+                        <p class="feature-description">
+                            Get instant insights into attendance patterns and
+                            statistics
+                        </p>
+                    </div>
+                    <div class="feature-card">
+                        <i class="fas fa-shield-alt feature-icon"></i>
+                        <h3 class="feature-title">Secure & Reliable</h3>
+                        <p class="feature-description">
+                            Your data is protected with industry-standard
+                            security measures
+                        </p>
+                    </div>
+                </div>
+
+                <div class="action-buttons">
+                    <form action="/recognize" method="post" class="d-inline">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-camera"></i>
+                            Mark Attendance
+                        </button>
+                    </form>
+                </div>
+                {% endif %}
+            </div>
+        </main>
+
+        <!-- Bootstrap JS -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    </body>
+</html>

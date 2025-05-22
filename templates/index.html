@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Register New Student - FRAMS</title>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+
+        <!-- Google Fonts -->
+        <link
+            href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+            rel="stylesheet"
+        />
+
+        <!-- Bootstrap CSS -->
+        <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+        />
+
+        <!-- Font Awesome -->
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+        />
+
+        <style>
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+                font-family: "Poppins", sans-serif;
+            }
+
+            body {
+                background: #f4f7fe;
+                min-height: 100vh;
+            }
+
+            .registration-container {
+                min-height: calc(100vh - 72px);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                padding: 2rem;
+                background: url("{{url_for('static',filename='bg-test11.jpg')}}")
+                    no-repeat center center/cover;
+                position: relative;
+            }
+
+            .registration-container::before {
+                content: "";
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(255, 255, 255, 0.9);
+            }
+
+            .registration-card {
+                background: white;
+                border-radius: 20px;
+                padding: 2.5rem;
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+                width: 100%;
+                max-width: 500px;
+                position: relative;
+                z-index: 1;
+            }
+
+            .registration-header {
+                text-align: center;
+                margin-bottom: 2rem;
+            }
+
+            .registration-title {
+                color: #2d3748;
+                font-size: 1.8rem;
+                font-weight: 600;
+                margin-bottom: 0.5rem;
+            }
+
+            .registration-subtitle {
+                color: #718096;
+                font-size: 0.9rem;
+            }
+
+            .form-group {
+                margin-bottom: 1.5rem;
+            }
+
+            .form-label {
+                color: #4a5568;
+                font-size: 0.9rem;
+                font-weight: 500;
+                margin-bottom: 0.5rem;
+            }
+
+            .form-control {
+                width: 100%;
+                padding: 0.75rem 1rem;
+                border: 2px solid #e2e8f0;
+                border-radius: 10px;
+                font-size: 1rem;
+                transition: all 0.3s ease;
+            }
+
+            .form-control:focus {
+                border-color: #667eea;
+                box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+                outline: none;
+            }
+
+            .btn-submit {
+                width: 100%;
+                padding: 0.75rem;
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                color: white;
+                border: none;
+                border-radius: 10px;
+                font-size: 1rem;
+                font-weight: 500;
+                cursor: pointer;
+                transition: all 0.3s ease;
+            }
+
+            .btn-submit:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+            }
+
+            .instructions {
+                margin-top: 1.5rem;
+                padding: 1rem;
+                background: #f7fafc;
+                border-radius: 10px;
+                border-left: 4px solid #667eea;
+            }
+
+            .instructions h3 {
+                color: #2d3748;
+                font-size: 1rem;
+                font-weight: 500;
+                margin-bottom: 0.5rem;
+            }
+
+            .instructions p {
+                color: #718096;
+                font-size: 0.9rem;
+                margin-bottom: 0.5rem;
+            }
+
+            .instructions i {
+                color: #667eea;
+                margin-right: 0.5rem;
+            }
+
+            @media (max-width: 768px) {
+                .registration-container {
+                    padding: 1rem;
+                }
+
+                .registration-card {
+                    padding: 1.5rem;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        {% include 'header.html' %}
+
+        <div class="registration-container">
+            <div class="registration-card">
+                <div class="registration-header">
+                    <h1 class="registration-title">Register New Student</h1>
+                    <p class="registration-subtitle">
+                        Please fill in your details to register
+                    </p>
+                </div>
+
+                <form action="/name" method="POST">
+                    <div class="form-group">
+                        <label class="form-label">Student ID</label>
+                        <input
+                            type="text"
+                            name="name1"
+                            class="form-control"
+                            placeholder="Enter your student ID"
+                            required
+                        />
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Registration Name</label>
+                        <input
+                            type="text"
+                            name="name2"
+                            class="form-control"
+                            placeholder="Enter your registration name"
+                            required
+                        />
+                    </div>
+
+                    <button type="submit" class="btn-submit">
+                        <i class="fas fa-camera me-2"></i> Start Registration
+                    </button>
+                </form>
+
+                <div class="instructions">
+                    <h3><i class="fas fa-info-circle"></i> Instructions:</h3>
+                    <p>
+                        <i class="fas fa-check-circle"></i> Your webcam will
+                        open after clicking the submit button.
+                    </p>
+                    <p>
+                        <i class="fas fa-keyboard"></i> Press
+                        <strong>SPACE</strong> to capture your image.
+                    </p>
+                    <p>
+                        <i class="fas fa-times-circle"></i> Press
+                        <strong>ESC</strong> to close the camera.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bootstrap JS -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    </body>
+</html>

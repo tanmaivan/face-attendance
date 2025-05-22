@@ -1,0 +1,11 @@
+__pycache__/
+gallery/
+venv/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.db
+*.csv
+results/
+.DS_Store

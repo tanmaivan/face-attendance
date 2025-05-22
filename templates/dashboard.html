@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Dashboard - FRAMS</title>
+
+        <!-- Google Fonts -->
+        <link
+            href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+            rel="stylesheet"
+        />
+
+        <!-- Bootstrap CSS -->
+        <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+        />
+
+        <!-- Font Awesome -->
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+        />
+
+        <!-- Plotly -->
+        <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+
+        <!-- Flatpickr -->
+        <link
+            href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css"
+            rel="stylesheet"
+        />
+        <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+        <style>
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+                font-family: "Poppins", sans-serif;
+            }
+
+            body {
+                background: #f4f7fe;
+                min-height: 100vh;
+            }
+
+            .main-content {
+                min-height: calc(100vh - 72px);
+                padding: 2rem;
+            }
+
+            .container {
+                max-width: 1200px;
+                margin: 0 auto;
+                padding: 0 2rem;
+            }
+
+            .header {
+                text-align: center;
+                margin-bottom: 2rem;
+            }
+
+            .header h1 {
+                color: #2d3748;
+                font-weight: 600;
+                font-size: 2rem;
+            }
+
+            .summary-card {
+                background: white;
+                border-radius: 15px;
+                padding: 1.5rem;
+                margin-bottom: 1.5rem;
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+                transition: all 0.3s ease;
+                border: 1px solid rgba(102, 126, 234, 0.1);
+            }
+
+            .summary-card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+            }
+
+            .summary-value {
+                font-size: 2rem;
+                font-weight: 600;
+                color: #2d3748;
+                margin-bottom: 0.5rem;
+            }
+
+            .summary-label {
+                color: #718096;
+                font-size: 0.9rem;
+                font-weight: 500;
+            }
+
+            .filter-container {
+                background: white;
+                padding: 1.5rem;
+                border-radius: 15px;
+                margin-bottom: 1.5rem;
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+                border: 1px solid rgba(102, 126, 234, 0.1);
+            }
+
+            .filter-container label {
+                color: #4a5568;
+                font-weight: 500;
+                margin-bottom: 0.5rem;
+            }
+
+            .form-control {
+                border: 2px solid #e2e8f0;
+                border-radius: 10px;
+                padding: 0.75rem 1rem;
+                transition: all 0.3s ease;
+            }
+
+            .form-control:focus {
+                border-color: #667eea;
+                box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            }
+
+            .btn-group {
+                display: flex;
+                gap: 1rem;
+                justify-content: center;
+                margin-top: 2rem;
+                flex-wrap: wrap;
+            }
+
+            .btn {
+                padding: 0.75rem 1.5rem;
+                border-radius: 10px;
+                font-weight: 500;
+                display: inline-flex;
+                align-items: center;
+                gap: 0.5rem;
+                transition: all 0.3s ease;
+                text-decoration: none;
+            }
+
+            .btn-primary {
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                border: none;
+                color: white;
+            }
+
+            .btn-primary:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+                color: white;
+            }
+
+            .btn-outline {
+                background: white;
+                border: 2px solid #667eea;
+                color: #667eea;
+            }
+
+            .btn-outline:hover {
+                background: #667eea;
+                color: white;
+            }
+
+            .nav-tabs {
+                border: none;
+                margin-bottom: 1.5rem;
+                gap: 0.5rem;
+            }
+
+            .nav-tabs .nav-link {
+                border: 2px solid #667eea !important;
+                color: #2d3748 !important;
+                font-weight: 500;
+                padding: 0.75rem 1.5rem;
+                border-radius: 10px;
+                transition: all 0.3s ease;
+                background: rgba(102, 126, 234, 0.1) !important;
+            }
+
+            .nav-tabs .nav-link:hover {
+                color: #1a202c !important;
+                background: rgba(102, 126, 234, 0.2) !important;
+                border-color: #764ba2 !important;
+            }
+
+            .nav-tabs .nav-link.active {
+                background: linear-gradient(
+                    135deg,
+                    #667eea 0%,
+                    #764ba2 100%
+                ) !important;
+                color: white !important;
+                border-color: transparent !important;
+                box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+            }
+
+            .chart-container {
+                background: white;
+                border-radius: 15px;
+                padding: 1.5rem;
+                margin-bottom: 1.5rem;
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+                border: 1px solid rgba(102, 126, 234, 0.1);
+            }
+
+            .table {
+                background: white;
+                border-radius: 15px;
+                overflow: hidden;
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            }
+
+            .table thead th {
+                background: #f7fafc;
+                color: #4a5568;
+                font-weight: 600;
+                border: none;
+                padding: 1rem;
+            }
+
+            .table tbody td {
+                padding: 1rem;
+                color: #2d3748;
+                border-color: #e2e8f0;
+            }
+
+            .table tbody tr:hover {
+                background: #f7fafc;
+            }
+
+            @media (max-width: 768px) {
+                .container {
+                    padding: 0 1rem;
+                }
+
+                .summary-value {
+                    font-size: 1.5rem;
+                }
+
+                .chart-container {
+                    padding: 1rem;
+                }
+
+                .btn-group {
+                    flex-direction: column;
+                }
+
+                .btn {
+                    width: 100%;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        {% include 'header.html' %}
+
+        <main class="main-content">
+            <div class="container">
+                <div class="header">
+                    <h1>Attendance Dashboard</h1>
+                </div>
+
+                <!-- Summary Cards -->
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="summary-card">
+                            <div class="summary-value" id="totalStudents">
+                                -
+                            </div>
+                            <div class="summary-label">
+                                <i class="fas fa-users me-2"></i>Total Students
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="summary-card">
+                            <div class="summary-value" id="todayAttendance">
+                                -
+                            </div>
+                            <div class="summary-label">
+                                <i class="fas fa-calendar-check me-2"></i
+                                >Today's Attendance
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="summary-card">
+                            <div class="summary-value" id="attendanceRate">
+                                -
+                            </div>
+                            <div class="summary-label">
+                                <i class="fas fa-chart-line me-2"></i>Attendance
+                                Rate
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Date Filter -->
+                <div class="filter-container">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label
+                                ><i class="fas fa-calendar me-2"></i>Start
+                                Date</label
+                            >
+                            <input
+                                type="text"
+                                class="form-control"
+                                id="startDate"
+                            />
+                        </div>
+                        <div class="col-md-4">
+                            <label
+                                ><i class="fas fa-calendar me-2"></i>End
+                                Date</label
+                            >
+                            <input
+                                type="text"
+                                class="form-control"
+                                id="endDate"
+                            />
+                        </div>
+                        <div class="col-md-4">
+                            <label>&nbsp;</label>
+                            <button
+                                class="btn btn-primary form-control"
+                                onclick="applyFilter()"
+                            >
+                                <i class="fas fa-filter me-2"></i>Apply Filter
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Navigation Tabs -->
+                <ul class="nav nav-tabs" id="dashboardTabs" role="tablist">
+                    <li class="nav-item">
+                        <a
+                            class="nav-link active"
+                            id="daily-tab"
+                            data-bs-toggle="tab"
+                            href="#daily"
+                            role="tab"
+                        >
+                            <i class="fas fa-calendar-day me-2"></i>Daily
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a
+                            class="nav-link"
+                            id="weekly-tab"
+                            data-bs-toggle="tab"
+                            href="#weekly"
+                            role="tab"
+                        >
+                            <i class="fas fa-calendar-week me-2"></i>Weekly
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a
+                            class="nav-link"
+                            id="monthly-tab"
+                            data-bs-toggle="tab"
+                            href="#monthly"
+                            role="tab"
+                        >
+                            <i class="fas fa-calendar-alt me-2"></i>Monthly
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a
+                            class="nav-link"
+                            id="students-tab"
+                            data-bs-toggle="tab"
+                            href="#students"
+                            role="tab"
+                        >
+                            <i class="fas fa-user-graduate me-2"></i>Students
+                        </a>
+                    </li>
+                </ul>
+
+                <!-- Tab Content -->
+                <div class="tab-content">
+                    <!-- Daily Tab -->
+                    <div
+                        class="tab-pane fade show active"
+                        id="daily"
+                        role="tabpanel"
+                    >
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="chart-container">
+                                    <div id="dailyAttendance"></div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="chart-container">
+                                    <div id="timeDistribution"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="chart-container">
+                                    <div id="dayOfWeek"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Weekly Tab -->
+                    <div class="tab-pane fade" id="weekly" role="tabpanel">
+                        <div class="chart-container">
+                            <div id="weeklyAttendance"></div>
+                        </div>
+                    </div>
+
+                    <!-- Monthly Tab -->
+                    <div class="tab-pane fade" id="monthly" role="tabpanel">
+                        <div class="chart-container">
+                            <div id="monthlyAttendance"></div>
+                        </div>
+                    </div>
+
+                    <!-- Students Tab -->
+                    <div class="tab-pane fade" id="students" role="tabpanel">
+                        <div class="chart-container">
+                            <div id="studentAttendance"></div>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            <i class="fas fa-user me-2"></i>Name
+                                        </th>
+                                        <th>
+                                            <i
+                                                class="fas fa-check-circle me-2"
+                                            ></i
+                                            >Total Attendance
+                                        </th>
+                                        <th>
+                                            <i
+                                                class="fas fa-calendar-check me-2"
+                                            ></i
+                                            >Days Present
+                                        </th>
+                                        <th>
+                                            <i
+                                                class="fas fa-calendar-plus me-2"
+                                            ></i
+                                            >First Attendance
+                                        </th>
+                                        <th>
+                                            <i
+                                                class="fas fa-calendar-alt me-2"
+                                            ></i
+                                            >Last Attendance
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody id="studentTableBody"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="btn-group">
+                    <form action="/whole" method="post" class="d-inline">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-database"></i>
+                            View Complete Database
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </main>
+
+        <!-- Bootstrap JS -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+
+        <script>
+            // Initialize date pickers
+            flatpickr("#startDate", {
+                dateFormat: "Y-m-d",
+                maxDate: "today",
+            });
+            flatpickr("#endDate", {
+                dateFormat: "Y-m-d",
+                maxDate: "today",
+            });
+
+            // Fetch and display data
+            function fetchAndDisplayData() {
+                fetch("/dashboard_data")
+                    .then((response) => response.json())
+                    .then((data) => {
+                        // Update summary cards
+                        document.getElementById("totalStudents").textContent =
+                            data.summary.total_students;
+                        document.getElementById("todayAttendance").textContent =
+                            data.summary.today_attendance;
+                        document.getElementById("attendanceRate").textContent =
+                            data.summary.attendance_rate + "%";
+
+                        // Update charts and tables
+                        updateCharts(data);
+                        updateStudentTable(data.student_stats);
+                    });
+            }
+
+            // Call fetchAndDisplayData when page loads
+            document.addEventListener("DOMContentLoaded", fetchAndDisplayData);
+
+            // Function to update all charts
+            function updateCharts(data) {
+                // Daily Attendance Chart
+                const dailyData = {
+                    x: data.daily_attendance.dates,
+                    y: data.daily_attendance.counts,
+                    type: "bar",
+                    name: "Daily Attendance",
+                    marker: { color: "#667eea" },
+                };
+
+                const dailyLayout = {
+                    title: "Daily Attendance Count",
+                    xaxis: { title: "Date" },
+                    yaxis: { title: "Number of Attendees" },
+                    paper_bgcolor: "rgba(0,0,0,0)",
+                    plot_bgcolor: "rgba(0,0,0,0)",
+                    font: { family: "Poppins, sans-serif" },
+                };
+
+                Plotly.newPlot("dailyAttendance", [dailyData], dailyLayout);
+
+                // Time Distribution Chart
+                const timeData = {
+                    values: data.time_distribution.counts,
+                    labels: data.time_distribution.times,
+                    type: "pie",
+                    name: "Time Distribution",
+                    hole: 0.4,
+                    marker: {
+                        colors: [
+                            "#667eea",
+                            "#764ba2",
+                            "#5a67d8",
+                            "#4c51bf",
+                            "#434190",
+                        ],
+                    },
+                };
+
+                const timeLayout = {
+                    title: "Attendance Time Distribution",
+                    paper_bgcolor: "rgba(0,0,0,0)",
+                    plot_bgcolor: "rgba(0,0,0,0)",
+                    font: { family: "Poppins, sans-serif" },
+                };
+
+                Plotly.newPlot("timeDistribution", [timeData], timeLayout);
+
+                // Day of Week Chart
+                const dayOfWeekData = {
+                    x: data.day_of_week.days,
+                    y: data.day_of_week.counts,
+                    type: "bar",
+                    name: "Attendance by Day of Week",
+                    marker: { color: "#764ba2" },
+                };
+
+                const dayOfWeekLayout = {
+                    title: "Attendance by Day of Week",
+                    xaxis: { title: "Day" },
+                    yaxis: { title: "Number of Attendees" },
+                    paper_bgcolor: "rgba(0,0,0,0)",
+                    plot_bgcolor: "rgba(0,0,0,0)",
+                    font: { family: "Poppins, sans-serif" },
+                };
+
+                Plotly.newPlot("dayOfWeek", [dayOfWeekData], dayOfWeekLayout);
+
+                // Weekly Attendance Chart
+                const weeklyData = {
+                    x: data.weekly_attendance.weeks,
+                    y: data.weekly_attendance.counts,
+                    type: "bar",
+                    name: "Weekly Attendance",
+                    marker: { color: "#667eea" },
+                };
+
+                const weeklyLayout = {
+                    title: "Weekly Attendance",
+                    xaxis: { title: "Week" },
+                    yaxis: { title: "Number of Attendees" },
+                    paper_bgcolor: "rgba(0,0,0,0)",
+                    plot_bgcolor: "rgba(0,0,0,0)",
+                    font: { family: "Poppins, sans-serif" },
+                };
+
+                Plotly.newPlot("weeklyAttendance", [weeklyData], weeklyLayout);
+
+                // Monthly Attendance Chart
+                const monthlyData = {
+                    x: data.monthly_attendance.months,
+                    y: data.monthly_attendance.counts,
+                    type: "bar",
+                    name: "Monthly Attendance",
+                    marker: { color: "#764ba2" },
+                };
+
+                const monthlyLayout = {
+                    title: "Monthly Attendance",
+                    xaxis: { title: "Month" },
+                    yaxis: { title: "Number of Attendees" },
+                    paper_bgcolor: "rgba(0,0,0,0)",
+                    plot_bgcolor: "rgba(0,0,0,0)",
+                    font: { family: "Poppins, sans-serif" },
+                };
+
+                Plotly.newPlot(
+                    "monthlyAttendance",
+                    [monthlyData],
+                    monthlyLayout
+                );
+
+                // Student Attendance Chart
+                const studentData = {
+                    x: data.student_stats.map((s) => s.name),
+                    y: data.student_stats.map((s) => s.total_attendance),
+                    type: "bar",
+                    name: "Student Attendance",
+                    marker: { color: "#667eea" },
+                };
+
+                const studentLayout = {
+                    title: "Student Attendance Overview",
+                    xaxis: { title: "Student" },
+                    yaxis: { title: "Total Attendance" },
+                    paper_bgcolor: "rgba(0,0,0,0)",
+                    plot_bgcolor: "rgba(0,0,0,0)",
+                    font: { family: "Poppins, sans-serif" },
+                };
+
+                Plotly.newPlot(
+                    "studentAttendance",
+                    [studentData],
+                    studentLayout
+                );
+            }
+
+            // Function to update student table
+            function updateStudentTable(studentStats) {
+                const tableBody = document.getElementById("studentTableBody");
+                tableBody.innerHTML = "";
+                studentStats.forEach((student) => {
+                    const row = document.createElement("tr");
+                    row.innerHTML = `
+                        <td>${student.name}</td>
+                        <td>${student.total_attendance}</td>
+                        <td>${student.days_present}</td>
+                        <td>${student.first_attendance}</td>
+                        <td>${student.last_attendance}</td>
+                    `;
+                    tableBody.appendChild(row);
+                });
+            }
+
+            // Apply date filter
+            function applyFilter() {
+                const startDate = document.getElementById("startDate").value;
+                const endDate = document.getElementById("endDate").value;
+
+                if (!startDate || !endDate) {
+                    alert("Please select both start and end dates");
+                    return;
+                }
+
+                fetch(
+                    `/dashboard_filtered_data?start_date=${startDate}&end_date=${endDate}`
+                )
+                    .then((response) => response.json())
+                    .then((data) => {
+                        // Update charts and tables with filtered data
+                        updateCharts(data);
+                        updateStudentTable(data.student_stats);
+                    });
+            }
+        </script>
+    </body>
+</html>
