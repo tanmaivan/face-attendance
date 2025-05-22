@@ -195,9 +195,7 @@ def name():
         name2 = request.form['name2']
         # Check if ID already exists
         if name1 in [i['pid'] for i in info]:
-            return render_template('error.html', 
-                                 message="Student ID already exists in the system. Please use a different ID.",
-                                 back_url="/")
+            return jsonify({'error': 'ID already exists'}), 400
         # Initialize registration session
         global current_registration, current_mode
         current_registration = {
