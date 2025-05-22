@@ -254,12 +254,8 @@
                             toast.style.zIndex = "1050";
                             toast.innerHTML = `
                             <div class="toast show" role="alert" aria-live="assertive" aria-atomic="true">
-                                <div class="toast-header bg-danger text-white">
+                                <div class="toast-body bg-danger text-white rounded-3 px-4 py-3">
                                     <i class="fas fa-exclamation-circle me-2"></i>
-                                    <strong class="me-auto">Error</strong>
-                                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast" aria-label="Close"></button>
-                                </div>
-                                <div class="toast-body">
                                     ${data.error}
                                 </div>
                             </div>
