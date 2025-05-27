@@ -280,7 +280,7 @@
                     <div class="info-label">Name</div>
                     <div class="info-value" id="studentName"></div>
                 </div>
-                <a href="/" class="btn">
+                <a href="/" class="btn" onclick="handleExit(event)">
                     <i class="fas fa-home"></i>
                     Return to Home
                 </a>
@@ -302,6 +302,22 @@
 
                 overlay.style.display = "block";
                 dialog.style.display = "block";
+            }
+
+            async function handleExit(event) {
+                event.preventDefault();
+                try {
+                    await fetch("/exit_recognition", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                    });
+                    window.location.href = "/";
+                } catch (error) {
+                    console.error("Error exiting recognition:", error);
+                    window.location.href = "/";
+                }
             }
 
             // Listen for attendance marked event from server

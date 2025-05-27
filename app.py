@@ -174,6 +174,13 @@ def recognize():
         return render_template('recognize.html')
     return render_template('main.html')
 
+@app.route('/exit_recognition', methods=["POST"])
+def exit_recognition():
+    # Reset recognized names when exiting recognition mode
+    global recognized_names
+    recognized_names = set()
+    return jsonify({'status': 'success'})
+
 @app.route('/')
 def index_route():  # Đổi tên hàm để tránh xung đột với biến index
     return render_template('main.html')
